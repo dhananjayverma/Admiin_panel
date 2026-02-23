@@ -19,6 +19,7 @@ import {
   MenuIcon,
   CloseIcon,
   ClockIcon,
+  ReceptionistIcon,
 } from "./Icons";
 
 interface User {
@@ -49,6 +50,7 @@ const navItems: NavItem[] = [
   { path: "/branch-stock", label: "Branch Stock", icon: PharmacyIcon, section: "Management", superAdminOnly: true },
   { path: "/distributor-management", label: "Distributors", icon: DistributorIcon, section: "Management" },
   { path: "/doctor-management", label: "Doctors", icon: DoctorIcon, section: "Management" },
+  { path: "/receptionist-management", label: "Receptionists", icon: ReceptionistIcon, section: "Management" },
   { path: "/schedules", label: "Schedules", icon: ClockIcon, section: "Operations" },
   { path: "/patient-panel", label: "Patients", icon: PatientIcon, section: "Operations" },
   { path: "/orders", label: "Orders", icon: OrdersIcon, section: "Operations" },

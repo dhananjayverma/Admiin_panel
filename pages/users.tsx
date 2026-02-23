@@ -19,7 +19,7 @@ export default function UsersPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPassword, setShowPassword] = useState<Record<string, boolean>>({});
   const [editingUser, setEditingUser] = useState<any>(null);
-  const [filterRole, setFilterRole] = useState<"DOCTOR" | "PATIENT">("DOCTOR");
+  const [filterRole, setFilterRole] = useState<"DOCTOR" | "HOSPITAL_ADMIN" | "PATIENT">("DOCTOR");
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",
@@ -242,6 +242,8 @@ export default function UsersPage() {
     switch (role) {
       case "SUPER_ADMIN":
         return "bg-purple-500/20 text-purple-300 border-purple-500/30";
+      case "HOSPITAL_ADMIN":
+        return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
       case "DOCTOR":
         return "bg-blue-500/20 text-blue-300 border-blue-500/30";
       case "PHARMACY_STAFF":
@@ -307,6 +309,18 @@ export default function UsersPage() {
               }`}
             >
               👨‍⚕️ Doctors
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setFilterRole("HOSPITAL_ADMIN")}
+              className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                filterRole === "HOSPITAL_ADMIN"
+                  ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/50"
+                  : "bg-slate-800 text-indigo-300 hover:bg-slate-700 border border-indigo-900/30"
+              }`}
+            >
+              🏥 Receptionists
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -444,7 +458,7 @@ export default function UsersPage() {
           {users.filter((u) => u.role === filterRole).length === 0 && (
             <div className="text-center py-12">
               <p className="text-lg text-indigo-300 font-medium">
-                No {filterRole === "DOCTOR" ? "Doctors" : "Patients"} found
+                No {filterRole === "DOCTOR" ? "Doctors" : filterRole === "HOSPITAL_ADMIN" ? "Receptionists" : "Patients"} found
               </p>
             </div>
           )}
@@ -518,6 +532,7 @@ export default function UsersPage() {
                 required
               >
                 <option value="DOCTOR">Doctor</option>
+                <option value="HOSPITAL_ADMIN">Receptionist / Hospital Admin</option>
                 <option value="PHARMACY_STAFF">Pharmacy Staff</option>
                 <option value="DISTRIBUTOR">Distributor</option>
                 <option value="PATIENT">Patient</option>
@@ -643,6 +658,7 @@ export default function UsersPage() {
                 required
               >
                 <option value="DOCTOR">Doctor</option>
+                <option value="HOSPITAL_ADMIN">Receptionist / Hospital Admin</option>
                 <option value="PHARMACY_STAFF">Pharmacy Staff</option>
                 <option value="DISTRIBUTOR">Distributor</option>
                 <option value="PATIENT">Patient</option>
