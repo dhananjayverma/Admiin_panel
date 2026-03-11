@@ -14,7 +14,7 @@ export default function AnimatedCard({ children, delay = 0, className = "" }: An
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
       whileHover={{ y: -4 }}
-      className={`rounded-2xl bg-white border-2 border-blue-200 p-6 shadow-lg ${className}`}
+      className={`medical-card ${className}`}
     >
       {children}
     </motion.div>

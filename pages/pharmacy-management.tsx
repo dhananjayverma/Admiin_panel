@@ -399,19 +399,20 @@ export default function PharmacyManagementPage() {
 
   return (
     <Layout user={user} currentPage="pharmacy-management">
-      <motion.header
+            <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="sticky top-0 z-10 mb-6 sm:mb-8 bg-transparent"
+        className="mb-6 sm:mb-8"
       >
-        <div className="bg-white rounded-lg shadow-sm border border-gray-300 p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="medical-card bg-gradient-to-r from-white via-white to-cyan-50/70 border border-white/70 shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="flex-1 min-w-0">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1 text-gray-900">
+              <p className="text-xs font-semibold tracking-[0.3em] text-slate-400 uppercase mb-2">Management</p>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2 text-slate-900">
                 Pharmacy Management
               </h2>
-              <p className="text-sm text-gray-600">
-                Manage pharmacies and create login credentials for pharmacy staff
+              <p className="text-sm text-slate-600">
+                Manage pharmacies and create login credentials for pharmacy staff.
               </p>
             </div>
             <motion.button
@@ -422,10 +423,10 @@ export default function PharmacyManagementPage() {
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="px-4 py-2 bg-blue-900 hover:bg-blue-800 text-white font-semibold rounded-lg shadow-sm transition-all flex items-center gap-2 text-sm sm:text-base"
+              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-full shadow-sm transition-all flex items-center gap-2 text-sm sm:text-base"
             >
               <PlusIcon className="w-4 h-4" />
-              <span>Add New Pharmacy</span>
+              <span>Add Pharmacy</span>
             </motion.button>
           </div>
         </div>
@@ -447,13 +448,13 @@ export default function PharmacyManagementPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1, duration: 0.4 }}
-                className="p-5 border border-blue-200 rounded-lg bg-white hover:shadow-md transition-all"
+                className="medical-card p-6"
               >
                   {/* Header Section */}
                   <div className="flex items-start gap-3 mb-4">
                     <div className="relative flex-shrink-0">
-                      <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-200">
-                        <PharmacyIcon className="w-6 h-6 text-blue-700" />
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-50 to-emerald-100 border border-emerald-100 flex items-center justify-center">
+                        <PharmacyIcon className="w-6 h-6 text-teal-700" />
                       </div>
                       {/* Online Status Indicator */}
                       <div className={`absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
@@ -461,16 +462,16 @@ export default function PharmacyManagementPage() {
                       }`} title={isOnline ? 'Online' : 'Offline'} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-base text-gray-900 mb-2">{p.name}</h3>
+                      <h3 className="font-bold text-base text-slate-900 mb-2">{p.name}</h3>
                       <div className="flex items-center gap-2">
                         <span className={`text-xs px-2 py-0.5 rounded font-semibold ${
                           isOnline 
                             ? 'bg-green-100 text-green-700' 
-                            : 'bg-gray-100 text-gray-600'
+                            : 'bg-slate-100 text-slate-600'
                         }`}>
                           {isOnline ? 'Active' : 'Inactive'}
                         </span>
-                        <span className="text-xs text-gray-400">#{p._id.slice(-8)}</span>
+                        <span className="text-xs text-slate-400">#{p._id.slice(-8)}</span>
                       </div>
                     </div>
                   </div>
@@ -478,19 +479,19 @@ export default function PharmacyManagementPage() {
                   {/* Details Section */}
                   <div className="space-y-2 mb-4">
                     <div className="flex items-start gap-2">
-                      <span className="text-pink-500 text-base">📍</span>
-                      <p className="text-sm text-gray-600 flex-1">{p.address}</p>
+                      
+                      <p className="text-sm text-slate-600 flex-1">{p.address}</p>
                     </div>
                     {p.phone && (
                       <div className="flex items-center gap-2">
-                        <span className="text-pink-500 text-base">📞</span>
-                        <p className="text-sm text-gray-600">{p.phone}</p>
+                        
+                        <p className="text-sm text-slate-600">{p.phone}</p>
                       </div>
                     )}
                     {p.distributorId && (
                       <div className="flex items-center gap-2">
-                        <span className="text-orange-500 text-base">🚚</span>
-                        <p className="text-sm text-gray-600">
+                        
+                        <p className="text-sm text-slate-600">
                           Linked to: {distributors.find(d => d._id === p.distributorId)?.name || `Distributor ${p.distributorId.slice(-8)}`}
                         </p>
                       </div>
@@ -506,7 +507,7 @@ export default function PharmacyManagementPage() {
                       }}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex-1 px-3 py-2 rounded bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-sm font-medium transition-all flex items-center justify-center gap-1.5"
+                      className="flex-1 px-3 py-2 rounded bg-white hover:bg-gray-50 text-slate-700 border border-slate-200 text-sm font-medium transition-all flex items-center justify-center gap-1.5"
                     >
                       <EyeIcon className="w-4 h-4" />
                       <span>View</span>
@@ -515,7 +516,7 @@ export default function PharmacyManagementPage() {
                       onClick={() => openEditModal(p)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex-1 px-3 py-2 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-sm font-medium transition-all flex items-center justify-center gap-1.5"
+                      className="flex-1 px-3 py-2 rounded bg-cyan-50 hover:bg-blue-100 text-teal-700 border border-emerald-100 text-sm font-medium transition-all flex items-center justify-center gap-1.5"
                     >
                       <EditIcon className="w-4 h-4" />
                       <span>Edit</span>
@@ -536,12 +537,12 @@ export default function PharmacyManagementPage() {
           {pharmacies.length === 0 && (
             <div className="col-span-full text-center py-12">
               <div className="flex justify-center mb-4">
-                <div className="w-16 h-16 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-200">
-                  <PharmacyIcon className="w-10 h-10 text-blue-900" />
+                <div className="w-16 h-16 rounded-lg bg-cyan-50 flex items-center justify-center border border-emerald-100">
+                  <PharmacyIcon className="w-10 h-10 text-slate-900" />
                 </div>
               </div>
-              <p className="text-lg text-gray-700 font-medium mb-2">No pharmacies found</p>
-              <p className="text-sm text-gray-600">Click "Add New Pharmacy" to get started</p>
+              <p className="text-lg text-slate-700 font-medium mb-2">No pharmacies found</p>
+              <p className="text-sm text-slate-600">Click "Add New Pharmacy" to get started</p>
             </div>
           )}
         </div>
@@ -549,16 +550,16 @@ export default function PharmacyManagementPage() {
 
       {/* Add Pharmacy Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto z-[110]"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Add New Pharmacy</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Add New Pharmacy</h2>
             <form onSubmit={createPharmacy} className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Pharmacy Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -566,12 +567,12 @@ export default function PharmacyManagementPage() {
                   required
                   value={pharmacyForm.name}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, name: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                   placeholder="Enter pharmacy name"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Address <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -579,12 +580,12 @@ export default function PharmacyManagementPage() {
                   rows={3}
                   value={pharmacyForm.address}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, address: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                   placeholder="Enter pharmacy address"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Phone <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -592,19 +593,19 @@ export default function PharmacyManagementPage() {
                   required
                   value={pharmacyForm.phone}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, phone: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                   placeholder="Enter phone number"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Distributor
                 </label>
                 <select
                   value={pharmacyForm.distributorId}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, distributorId: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                 >
                   <option value="">Select a distributor (optional)</option>
                   {distributors.map((distributor) => (
@@ -613,14 +614,14 @@ export default function PharmacyManagementPage() {
                     </option>
                   ))}
                 </select>
-                <p className="text-xs text-gray-500 mt-1">Link this pharmacy to a distributor</p>
+                <p className="text-xs text-slate-500 mt-1">Link this pharmacy to a distributor</p>
               </div>
 
-              <div className="pt-4 border-t border-gray-300">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">Login Credentials</h3>
+              <div className="pt-4 border-t border-slate-200">
+                <h3 className="text-sm font-semibold text-slate-700 mb-3">Login Credentials</h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
                       Email <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -629,13 +630,13 @@ export default function PharmacyManagementPage() {
                       autoComplete="new-password"
                       value={pharmacyForm.email}
                       onChange={(e) => setPharmacyForm({ ...pharmacyForm, email: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                      className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                       placeholder="pharmacy@example.com"
                     />
-                    <p className="text-xs text-gray-500 mt-1">This will be used to login to the pharmacy panel</p>
+                    <p className="text-xs text-slate-500 mt-1">This will be used to login to the pharmacy panel</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
                       Password <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
@@ -645,14 +646,14 @@ export default function PharmacyManagementPage() {
                         autoComplete="new-password"
                         value={pharmacyForm.password}
                         onChange={(e) => setPharmacyForm({ ...pharmacyForm, password: e.target.value })}
-                        className="w-full px-4 py-2 pr-10 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                        className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                         placeholder="Enter new password for pharmacy"
                         minLength={6}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 focus:outline-none cursor-pointer"
                       >
                         {showPassword ? (
                           <EyeOffIcon className="w-5 h-5" />
@@ -661,7 +662,7 @@ export default function PharmacyManagementPage() {
                         )}
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">Minimum 6 characters - Create a new password for pharmacy access</p>
+                    <p className="text-xs text-slate-500 mt-1">Minimum 6 characters - Create a new password for pharmacy access</p>
                   </div>
                 </div>
               </div>
@@ -669,7 +670,7 @@ export default function PharmacyManagementPage() {
               <div className="flex gap-3 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-900 hover:bg-blue-800 text-white rounded-lg font-semibold shadow-sm transition-all"
+                  className="flex-1 medical-btn-primary"
                 >
                   Create Pharmacy
                 </button>
@@ -680,7 +681,7 @@ export default function PharmacyManagementPage() {
                     setPharmacyForm({ name: "", address: "", phone: "", email: "", password: "", distributorId: "" });
                     setShowPassword(false);
                   }}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                  className="flex-1 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-all"
                 >
                   Cancel
                 </button>
@@ -692,20 +693,20 @@ export default function PharmacyManagementPage() {
 
       {/* View Pharmacy Modal */}
       {showViewModal && viewingPharmacy && (
-        <div className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto z-[110]"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Pharmacy Details</h2>
+              <h2 className="text-2xl font-bold text-slate-900">Pharmacy Details</h2>
               <button
                 onClick={() => {
                   setShowViewModal(false);
                   setViewingPharmacy(null);
                 }}
-                className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+                className="text-slate-400 hover:text-slate-600 text-2xl font-bold"
               >
                 ×
               </button>
@@ -713,9 +714,9 @@ export default function PharmacyManagementPage() {
 
             <div className="space-y-6">
               {/* Header Section */}
-              <div className="flex items-center gap-4 pb-4 border-b border-gray-200">
-                <div className="w-16 h-16 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-200 relative">
-                  <PharmacyIcon className="w-8 h-8 text-blue-900" />
+              <div className="flex items-center gap-4 pb-4 border-b border-slate-200">
+                <div className="w-16 h-16 rounded-lg bg-cyan-50 flex items-center justify-center border border-emerald-100 relative">
+                  <PharmacyIcon className="w-8 h-8 text-slate-900" />
                   {(() => {
                     const userId = pharmacyUserMap.get(viewingPharmacy._id);
                     const isOnline = userId ? getStatus(userId) : false;
@@ -728,7 +729,7 @@ export default function PharmacyManagementPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-xl font-bold text-gray-900">{viewingPharmacy.name}</h3>
+                    <h3 className="text-xl font-bold text-slate-900">{viewingPharmacy.name}</h3>
                     {(() => {
                       const userId = pharmacyUserMap.get(viewingPharmacy._id);
                       const isOnline = userId ? getStatus(userId) : false;
@@ -736,43 +737,43 @@ export default function PharmacyManagementPage() {
                         <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${
                           isOnline 
                             ? 'bg-green-100 text-green-700 border border-green-200' 
-                            : 'bg-gray-100 text-gray-600 border border-gray-200'
+                            : 'bg-slate-100 text-slate-600 border border-slate-200'
                         }`}>
                           {isOnline ? 'Active' : 'Inactive'}
                         </span>
                       );
                     })()}
                   </div>
-                  <p className="text-sm text-gray-500">ID: {viewingPharmacy._id.slice(-8)}</p>
+                  <p className="text-sm text-slate-500">ID: {viewingPharmacy._id.slice(-8)}</p>
                 </div>
               </div>
 
               {/* Details Section */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Address</label>
+                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Address</label>
                   <div className="flex items-start gap-2">
-                    <span className="text-red-500 text-lg mt-0.5">📍</span>
-                    <p className="text-sm text-gray-900 flex-1">{viewingPharmacy.address}</p>
+                    
+                    <p className="text-sm text-slate-900 flex-1">{viewingPharmacy.address}</p>
                   </div>
                 </div>
 
                 {viewingPharmacy.phone && (
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Phone</label>
+                    <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Phone</label>
                     <div className="flex items-center gap-2">
-                      <span className="text-pink-500 text-lg">📞</span>
-                      <p className="text-sm text-gray-900 font-medium">{viewingPharmacy.phone}</p>
+                      
+                      <p className="text-sm text-slate-900 font-medium">{viewingPharmacy.phone}</p>
                     </div>
                   </div>
                 )}
 
                 {viewingPharmacy.distributorId && (
                   <div className="space-y-1 md:col-span-2">
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Linked Distributor</label>
+                    <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Linked Distributor</label>
                     <div className="flex items-center gap-2">
-                      <span className="text-orange-500 text-lg">🚚</span>
-                      <p className="text-sm text-gray-900">
+                      
+                      <p className="text-sm text-slate-900">
                         {distributors.find(d => d._id === viewingPharmacy.distributorId)?.name || `Distributor ${viewingPharmacy.distributorId.slice(-8)}`}
                       </p>
                     </div>
@@ -781,7 +782,7 @@ export default function PharmacyManagementPage() {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3 pt-4 border-t border-gray-200">
+              <div className="flex gap-3 pt-4 border-t border-slate-200">
                 <motion.button
                   onClick={() => {
                     setShowViewModal(false);
@@ -790,7 +791,7 @@ export default function PharmacyManagementPage() {
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 px-4 py-2.5 bg-blue-900 hover:bg-blue-800 text-white rounded-lg font-semibold shadow-sm transition-all flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-semibold shadow-sm transition-all flex items-center justify-center gap-2"
                 >
                   <EditIcon className="w-4 h-4" />
                   <span>Edit Pharmacy</span>
@@ -802,7 +803,7 @@ export default function PharmacyManagementPage() {
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                  className="px-4 py-2.5 bg-white text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-all"
                 >
                   Close
                 </motion.button>
@@ -814,16 +815,16 @@ export default function PharmacyManagementPage() {
 
       {/* Edit Pharmacy Modal */}
       {showEditModal && editingPharmacy && (
-        <div className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto z-[110]"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Edit Pharmacy</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Edit Pharmacy</h2>
             <form onSubmit={updatePharmacy} className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Pharmacy Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -831,11 +832,11 @@ export default function PharmacyManagementPage() {
                   required
                   value={pharmacyForm.name}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, name: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Address <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -843,11 +844,11 @@ export default function PharmacyManagementPage() {
                   rows={3}
                   value={pharmacyForm.address}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, address: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Phone <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -855,14 +856,14 @@ export default function PharmacyManagementPage() {
                   required
                   value={pharmacyForm.phone}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, phone: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Distributor {editingPharmacy && editingPharmacy.distributorId && (
-                    <span className="text-xs font-normal text-gray-500">
+                    <span className="text-xs font-normal text-slate-500">
                       (Current: {distributors.find(d => d._id === editingPharmacy.distributorId)?.name || editingPharmacy.distributorId.slice(-8)})
                     </span>
                   )}
@@ -870,7 +871,7 @@ export default function PharmacyManagementPage() {
                 <select
                   value={pharmacyForm.distributorId}
                   onChange={(e) => setPharmacyForm({ ...pharmacyForm, distributorId: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                 >
                   <option value="">Select a distributor (optional)</option>
                   {distributors.map((distributor) => (
@@ -879,17 +880,17 @@ export default function PharmacyManagementPage() {
                     </option>
                   ))}
                 </select>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   Link this pharmacy to a distributor. This will show in the distributor portal.
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-gray-300">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">Update Login Credentials</h3>
-                <p className="text-xs text-gray-600 mb-4">You can update email and/or password. Leave fields empty to keep existing values.</p>
+              <div className="pt-4 border-t border-slate-200">
+                <h3 className="text-sm font-semibold text-slate-700 mb-3">Update Login Credentials</h3>
+                <p className="text-xs text-slate-600 mb-4">You can update email and/or password. Leave fields empty to keep existing values.</p>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
                       Email (Login ID)
                     </label>
                     <input
@@ -897,13 +898,13 @@ export default function PharmacyManagementPage() {
                       autoComplete="new-password"
                       value={pharmacyForm.email}
                       onChange={(e) => setPharmacyForm({ ...pharmacyForm, email: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                      className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                       placeholder="pharmacy@example.com"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Enter new email to update login ID. Leave empty to keep existing email.</p>
+                    <p className="text-xs text-slate-500 mt-1">Enter new email to update login ID. Leave empty to keep existing email.</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
                       Password
                     </label>
                     <div className="relative">
@@ -912,14 +913,14 @@ export default function PharmacyManagementPage() {
                         autoComplete="new-password"
                         value={pharmacyForm.password || ""}
                         onChange={(e) => setPharmacyForm({ ...pharmacyForm, password: e.target.value })}
-                        className="w-full px-4 py-2 pr-10 rounded-lg border border-gray-300 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
+                        className="w-full px-4 py-2 pr-10 rounded-lg border border-slate-200 focus:border-blue-900 focus:ring-2 focus:ring-blue-100 outline-none bg-white"
                         placeholder="Enter new password (leave empty to keep existing)"
                         minLength={6}
                       />
                       <button
                         type="button"
                         onClick={() => setShowEditPassword(!showEditPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none z-10"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 focus:outline-none z-10"
                         tabIndex={-1}
                       >
                         {showEditPassword ? (
@@ -929,7 +930,7 @@ export default function PharmacyManagementPage() {
                         )}
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">Minimum 6 characters. Leave empty to keep existing password.</p>
+                    <p className="text-xs text-slate-500 mt-1">Minimum 6 characters. Leave empty to keep existing password.</p>
                   </div>
                 </div>
               </div>
@@ -937,7 +938,7 @@ export default function PharmacyManagementPage() {
               <div className="flex gap-3 pt-4">
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-900 hover:bg-blue-800 text-white rounded-lg font-semibold shadow-sm transition-all"
+                  className="flex-1 medical-btn-primary"
                 >
                   Update Pharmacy
                 </button>
@@ -949,7 +950,7 @@ export default function PharmacyManagementPage() {
                     setPharmacyForm({ name: "", address: "", phone: "", email: "", password: "", distributorId: "" });
                     setShowEditPassword(false);
                   }}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                  className="flex-1 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-all"
                 >
                   Cancel
                 </button>
@@ -962,3 +963,4 @@ export default function PharmacyManagementPage() {
     </Layout>
   );
 }
+

@@ -28,14 +28,14 @@ export default function StatCard({
       animate={{ scale: 1, opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.3 }}
       whileHover={{ scale: 1.05, y: -5 }}
-      className={`rounded-xl bg-white border-2 border-gray-200 p-6 shadow-md hover:shadow-lg transition-all`}
+      className="medical-card hover:shadow-lg transition-all"
     >
       <div className="flex items-center justify-between mb-3">
-        <p className="text-sm font-medium text-gray-600">{title}</p>
+        <p className="text-sm font-medium text-slate-600">{title}</p>
         {icon && <div className="text-2xl">{icon}</div>}
       </div>
-      <p className="text-3xl font-bold text-gray-900 mb-1">{value}</p>
-      {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+      <p className="text-3xl font-bold text-slate-900 mb-1">{value}</p>
+      {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
     </motion.div>
   );
 }

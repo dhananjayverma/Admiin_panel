@@ -89,70 +89,73 @@ export default function ReceptionistManagementPage() {
 
   return (
     <Layout user={user} currentPage="receptionist-management">
-      <motion.header
+            <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         className="mb-6 sm:mb-8"
       >
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2 bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
-              Receptionists
-            </h2>
-            <p className="text-xs sm:text-sm text-indigo-300/70">
-              Add login credentials for reception staff. They use these to sign in to the Receptionist app (register patients, uploads, appointments, invoices).
-            </p>
+        <div className="medical-card bg-gradient-to-r from-white via-white to-emerald-50/70 border border-white/70 shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold tracking-[0.3em] text-slate-400 uppercase mb-2">Management</p>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2 text-slate-900">
+                Receptionists
+              </h2>
+              <p className="text-sm text-slate-600">
+                Add login credentials for reception staff. They use these to sign in to the Receptionist app.
+              </p>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                setForm({ name: "", email: "", password: "" });
+                setShowAddModal(true);
+              }}
+              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-full shadow-sm transition-all flex items-center gap-2 text-sm sm:text-base"
+            >
+              <PlusIcon className="w-4 h-4" />
+              Add Receptionist
+            </motion.button>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              setForm({ name: "", email: "", password: "" });
-              setShowAddModal(true);
-            }}
-            className="w-full sm:w-auto px-4 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-semibold text-sm shadow-lg shadow-emerald-500/50 transition-all flex items-center justify-center gap-2"
-          >
-            <PlusIcon className="w-5 h-5" />
-            Add Receptionist
-          </motion.button>
         </div>
       </motion.header>
 
-      <AnimatedCard className="p-4 sm:p-6">
+      <AnimatedCard className="p-0">
         {loading ? (
-          <div className="text-center py-12 text-indigo-300/70">Loading receptionists…</div>
+          <div className="text-center py-12 text-slate-500">Loading receptionists...</div>
         ) : receptionists.length === 0 ? (
           <div className="text-center py-12">
             <ReceptionistIcon className="w-16 h-16 mx-auto text-indigo-500/50 mb-4" />
-            <p className="text-indigo-300/80 mb-2">No receptionists yet</p>
-            <p className="text-sm text-indigo-300/60 mb-4">Add one so they can log in to the Receptionist app.</p>
+            <p className="text-slate-700 font-semibold mb-2">No receptionists yet</p>
+            <p className="text-sm text-slate-500 mb-4">Add one so they can log in to the Receptionist app.</p>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowAddModal(true)}
-              className="px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30"
+              className="px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
             >
               Add Receptionist
             </motion.button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {receptionists.map((r: any, idx: number) => (
               <motion.div
                 key={r._id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
-                className="border border-indigo-900/50 rounded-xl p-4 bg-slate-900/50"
+                className="medical-card p-5"
               >
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-500/20">
-                    <ReceptionistIcon className="w-5 h-5 text-emerald-300" />
+                  <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-100">
+                    <ReceptionistIcon className="w-5 h-5 text-teal-700" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-white truncate">{r.name}</h3>
-                    <p className="text-sm text-indigo-300/80 truncate">{r.email}</p>
-                    <span className="inline-block mt-2 text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <h3 className="font-semibold text-slate-900 truncate">{r.name}</h3>
+                    <p className="text-sm text-slate-600 truncate">{r.email}</p>
+                    <span className="inline-block mt-2 text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                       Receptionist
                     </span>
                   </div>
@@ -166,17 +169,17 @@ export default function ReceptionistManagementPage() {
       {/* Add Receptionist Modal */}
       {showAddModal && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-slate-900 rounded-2xl border border-indigo-900/50 p-6 max-w-md w-full"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6"
           >
-            <h3 className="text-xl font-bold text-emerald-300 mb-4">Add Receptionist</h3>
-            <p className="text-sm text-indigo-300/70 mb-4">
+            <h3 className="text-xl font-bold text-slate-900 mb-4">Add Receptionist</h3>
+            <p className="text-sm text-slate-600 mb-4">
               They will use this email and password to sign in to the Receptionist app.
             </p>
             <form onSubmit={handleAdd} className="space-y-4">
@@ -185,7 +188,7 @@ export default function ReceptionistManagementPage() {
                 value={form.name}
                 onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                 required
-                className="w-full rounded-xl bg-slate-950/50 border border-indigo-800/50 px-4 py-2.5 text-sm text-white placeholder-indigo-400/50 outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="medical-input w-full"
               />
               <input
                 type="email"
@@ -193,7 +196,7 @@ export default function ReceptionistManagementPage() {
                 value={form.email}
                 onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                 required
-                className="w-full rounded-xl bg-slate-950/50 border border-indigo-800/50 px-4 py-2.5 text-sm text-white placeholder-indigo-400/50 outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="medical-input w-full"
               />
               <input
                 type="password"
@@ -202,7 +205,7 @@ export default function ReceptionistManagementPage() {
                 onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                 required
                 minLength={6}
-                className="w-full rounded-xl bg-slate-950/50 border border-indigo-800/50 px-4 py-2.5 text-sm text-white placeholder-indigo-400/50 outline-none focus:ring-2 focus:ring-emerald-500/50"
+                className="medical-input w-full"
               />
               <div className="flex gap-3 pt-2">
                 <motion.button
@@ -210,7 +213,7 @@ export default function ReceptionistManagementPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 text-sm"
+                  className="flex-1 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-semibold text-sm"
                 >
                   Cancel
                 </motion.button>
@@ -219,9 +222,9 @@ export default function ReceptionistManagementPage() {
                   disabled={saving}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-semibold py-2.5 text-sm shadow-lg shadow-emerald-500/50 disabled:opacity-50"
+                  className="flex-1 medical-btn-primary text-sm disabled:opacity-50"
                 >
-                  {saving ? "Adding…" : "Add"}
+                  {saving ? "Adding..." : "Add"}
                 </motion.button>
               </div>
             </form>

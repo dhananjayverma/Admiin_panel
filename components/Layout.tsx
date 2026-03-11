@@ -3,77 +3,100 @@ import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster } from "react-hot-toast";
 import {
-  DashboardIcon,
-  HospitalIcon,
-  PharmacyIcon,
-  DistributorIcon,
-  DoctorIcon,
-  PatientIcon,
-  OrdersIcon,
-  ReportsIcon,
-  TemplatesIcon,
-  ActivityIcon,
-  FinanceIcon,
-  SettingsIcon,
-  LogoutIcon,
-  MenuIcon,
-  CloseIcon,
-  ClockIcon,
-  ReceptionistIcon,
+  DashboardIcon, HospitalIcon, PharmacyIcon, DistributorIcon, DoctorIcon,
+  PatientIcon, OrdersIcon, ReportsIcon, TemplatesIcon, ActivityIcon,
+  FinanceIcon, SettingsIcon, LogoutIcon, MenuIcon, CloseIcon, ClockIcon,
+  ReceptionistIcon, ChartBarIcon, BellIcon,
 } from "./Icons";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-interface LayoutProps {
-  children: ReactNode;
-  user: User | null;
-  currentPage?: string;
-}
-
+interface User { id: string; name: string; email: string; role: string; }
+interface LayoutProps { children: ReactNode; user: User | null; currentPage?: string; }
 type NavItem = {
-  path: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  section?: string;
-  superAdminOnly?: boolean;
+  path: string; label: string; icon: React.ComponentType<{ className?: string }>;
+  section?: string; superAdminOnly?: boolean; badge?: string;
 };
 
-const navItems: NavItem[] = [
-  { path: "/dashboard", label: "Overview", icon: DashboardIcon, section: "Home" },
-  { path: "/hospital-management", label: "Hospitals", icon: HospitalIcon, section: "Management" },
-  { path: "/pharmacy-management", label: "Pharmacies", icon: PharmacyIcon, section: "Management" },
-  { path: "/branch-stock", label: "Branch Stock", icon: PharmacyIcon, section: "Management", superAdminOnly: true },
-  { path: "/distributor-management", label: "Distributors", icon: DistributorIcon, section: "Management" },
-  { path: "/doctor-management", label: "Doctors", icon: DoctorIcon, section: "Management" },
-  { path: "/receptionist-management", label: "Receptionists", icon: ReceptionistIcon, section: "Management" },
-  { path: "/schedules", label: "Schedules", icon: ClockIcon, section: "Operations" },
-  { path: "/patient-panel", label: "Patients", icon: PatientIcon, section: "Operations" },
-  { path: "/orders", label: "Orders", icon: OrdersIcon, section: "Operations" },
-  { path: "/reports", label: "Reports", icon: ReportsIcon, section: "Reports" },
-  { path: "/templates", label: "Templates", icon: TemplatesIcon, section: "Reports" },
-  { path: "/activity-panel", label: "Activity", icon: ActivityIcon, section: "Reports" },
-  { path: "/finance", label: "Finance", icon: FinanceIcon, section: "Reports" },
-  { path: "/settings", label: "Settings", icon: SettingsIcon, section: "System" },
+const NAV_ITEMS: NavItem[] = [
+  { path: "/dashboard",               label: "Overview",          icon: DashboardIcon,    section: "Home" },
+  { path: "/hospital-management",     label: "Hospitals",         icon: HospitalIcon,     section: "Management" },
+  { path: "/pharmacy-management",     label: "Pharmacies",        icon: PharmacyIcon,     section: "Management" },
+  { path: "/branch-stock",            label: "Branch Stock",      icon: PharmacyIcon,     section: "Management", superAdminOnly: true },
+  { path: "/distributor-management",  label: "Distributors",      icon: DistributorIcon,  section: "Management" },
+  { path: "/doctor-management",       label: "Doctors",           icon: DoctorIcon,       section: "Management" },
+  { path: "/receptionist-management", label: "Receptionists",     icon: ReceptionistIcon, section: "Management" },
+  { path: "/nurse-management",        label: "Nurses",            icon: PatientIcon,      section: "Management" },
+  { path: "/infrastructure",          label: "Rooms & Beds",      icon: HospitalIcon,     section: "Hospital" },
+  { path: "/hospital-config",         label: "Config & Services", icon: SettingsIcon,     section: "Hospital" },
+  { path: "/ip-management",           label: "IP Patients",       icon: PatientIcon,      section: "Hospital" },
+  { path: "/certificates",            label: "Certificates",      icon: ReportsIcon,      section: "Hospital" },
+  { path: "/vitals-monitor",          label: "Vitals Monitor",    icon: ActivityIcon,     section: "Hospital" },
+  { path: "/medications-overview",    label: "Medications",       icon: DoctorIcon,       section: "Hospital" },
+  { path: "/nurse-alerts",            label: "Nurse Alerts",      icon: BellIcon,         section: "Hospital" },
+  { path: "/schedules",               label: "Schedules",         icon: ClockIcon,        section: "Operations" },
+  { path: "/patient-panel",           label: "Patients",          icon: PatientIcon,      section: "Operations" },
+  { path: "/orders",                  label: "Orders",            icon: OrdersIcon,       section: "Operations" },
+  { path: "/hospital-reports",        label: "Hospital Reports",  icon: ChartBarIcon,     section: "Reports" },
+  { path: "/patient-consolidated",    label: "Patient Summary",   icon: PatientIcon,      section: "Reports" },
+  { path: "/reports",                 label: "Pharmacy Reports",  icon: ReportsIcon,      section: "Reports" },
+  { path: "/templates",               label: "Templates",         icon: TemplatesIcon,    section: "Reports" },
+  { path: "/activity-panel",          label: "Activity",          icon: ActivityIcon,     section: "Reports" },
+  { path: "/finance",                 label: "Finance",           icon: FinanceIcon,      section: "Reports" },
+  { path: "/settings",               label: "Settings",          icon: SettingsIcon,     section: "System" },
 ];
 
-function getBreadcrumb(pathname: string, items: NavItem[]): string {
-  const item = items.find((i) => i.path === pathname);
+const SECTION_COLORS: Record<string, string> = {
+  Home: "text-cyan-200",
+  Management: "text-emerald-200",
+  Hospital: "text-sky-200",
+  Operations: "text-amber-200",
+  Reports: "text-rose-200",
+  System: "text-slate-300",
+};
+
+function getBreadcrumb(pathname: string): string {
+  const item = NAV_ITEMS.find((i) => i.path === pathname);
   return item?.label ?? pathname.replace(/^\//, "").replace(/-/g, " ");
 }
 
-export default function Layout({ children, user, currentPage }: LayoutProps) {
-  const router = useRouter();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+function NavGroup({ section, items, pathname, onNavigate }: {
+  section: string; items: NavItem[]; pathname: string; onNavigate: (path: string) => void;
+}) {
+  return (
+    <div className="mb-4">
+      <p className={`px-3 mb-1 text-[10px] font-bold uppercase section-label ${SECTION_COLORS[section] ?? "text-slate-400"}`}>
+        {section}
+      </p>
+      <div className="space-y-0.5">
+        {items.map((item) => {
+          const isActive = pathname === item.path;
+          return (
+            <motion.button
+              key={item.path}
+              onClick={() => onNavigate(item.path)}
+              whileHover={{ x: isActive ? 0 : 3 }}
+              whileTap={{ scale: 0.98 }}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 nav-item text-sm font-semibold transition-all ${
+                isActive ? "nav-item-active" : "nav-item-idle"
+              }`}
+            >
+              <item.icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
+              <span className="flex-1 text-left truncate">{item.label}</span>
+              {item.badge && (
+                <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full font-bold">{item.badge}</span>
+              )}
+            </motion.button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [router.pathname]);
+export default function Layout({ children, user }: LayoutProps) {
+  const router = useRouter();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  useEffect(() => { setIsMobileOpen(false); }, [router.pathname]);
 
   const logout = () => {
     if (typeof window !== "undefined") {
@@ -83,282 +106,159 @@ export default function Layout({ children, user, currentPage }: LayoutProps) {
     router.push("/");
   };
 
-  return (
-    <div className="h-screen bg-gray-50 flex overflow-hidden relative">
-      {/* Toast Notifications - Global */}
-      <div className="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 z-[9999] pointer-events-none">
-        <div className="max-w-sm sm:max-w-none ml-auto">
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 3000,
-              style: {
-                background: "#fff",
-                color: "#212529",
-                borderRadius: "8px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-                padding: "12px 16px",
-                fontSize: "14px",
-                fontWeight: "500",
-                zIndex: 9999,
-                maxWidth: "calc(100vw - 2rem)",
-                pointerEvents: "auto",
-              },
-              success: {
-                iconTheme: {
-                  primary: "#28A745",
-                  secondary: "#fff",
-                },
-                style: {
-                  borderLeft: "4px solid #28A745",
-                  zIndex: 9999,
-                },
-              },
-              error: {
-                iconTheme: {
-                  primary: "#DC3545",
-                  secondary: "#fff",
-                },
-                style: {
-                  borderLeft: "4px solid #DC3545",
-                  zIndex: 9999,
-                },
-              },
-            }}
-          />
+  const filtered = NAV_ITEMS.filter((item) => !item.superAdminOnly || user?.role === "SUPER_ADMIN");
+  const sections = Array.from(new Set(filtered.map((i) => i.section || "Main")));
+
+  const SidebarContent = ({ onNavigate }: { onNavigate: (path: string) => void }) => (
+    <>
+      {/* Logo */}
+      <div className="px-4 py-5 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl sidebar-brand flex items-center justify-center flex-shrink-0">
+            <HospitalIcon className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-sm font-semibold text-white tracking-wide">HealthCare</h1>
+            <p className="text-[10px] text-slate-300 font-medium">Admin Portal</p>
+          </div>
         </div>
       </div>
-      
-      {/* Mobile Menu Button */}
+
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto px-3 py-4 min-h-0 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-700/60">
+        {sections.map((section) => (
+          <NavGroup
+            key={section}
+            section={section}
+            items={filtered.filter((i) => (i.section || "Main") === section)}
+            pathname={router.pathname}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </nav>
+
+      {/* User Footer */}
+      {user && (
+        <div className="px-4 py-4 border-t border-white/10 flex-shrink-0">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-emerald-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-white truncate">{user.name}</p>
+              <span className="text-[10px] font-semibold text-cyan-200 bg-cyan-500/10 border border-cyan-300/20 px-1.5 py-0.5 rounded-full">
+                {user.role.replace("_", " ")}
+              </span>
+            </div>
+          </div>
+          <motion.button
+            onClick={logout}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-medium hover:bg-red-500/20 transition-all"
+          >
+            <LogoutIcon className="w-4 h-4" />
+            <span>Sign out</span>
+          </motion.button>
+        </div>
+      )}
+    </>
+  );
+
+  return (
+    <div className="app-shell h-screen flex overflow-hidden">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3500,
+          style: {
+            background: "#fff",
+            color: "#1e293b",
+            borderRadius: "12px",
+            boxShadow: "0 10px 40px rgba(0,0,0,0.12)",
+            padding: "12px 16px",
+            fontSize: "14px",
+            fontWeight: "500",
+            maxWidth: "360px",
+          },
+          success: { iconTheme: { primary: "#10b981", secondary: "#fff" }, style: { borderLeft: "4px solid #10b981" } },
+          error:   { iconTheme: { primary: "#ef4444", secondary: "#fff" }, style: { borderLeft: "4px solid #ef4444" } },
+        }}
+      />
+
+      {/* Mobile Menu Toggle */}
       <button
-        onClick={() => setIsMobileMenuOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg border border-gray-300 hover:bg-blue-50 transition-colors"
+        onClick={() => setIsMobileOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-xl bg-slate-900/90 shadow-xl border border-slate-700/60 hover:bg-slate-800 transition-colors"
         aria-label="Open menu"
       >
-        <MenuIcon className="w-6 h-6 text-gray-700" />
+        <MenuIcon className="w-5 h-5 text-white" />
       </button>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isMobileOpen && (
           <>
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setIsMobileOpen(false)}
+              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
             />
             <motion.aside
-              initial={{ x: -100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -100, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden fixed left-0 top-0 w-72 h-screen border-r border-gray-300 bg-white shadow-xl flex flex-col z-50"
+              initial={{ x: -280, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -280, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="lg:hidden fixed left-0 top-0 w-64 h-screen sidebar-shell flex flex-col z-50"
             >
-              {/* Mobile Header */}
-              <div className="px-6 py-6 border-b border-gray-300 bg-blue-900 flex items-center justify-between flex-shrink-0">
-                <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-lg bg-white flex items-center justify-center shadow-md">
-                    <HospitalIcon className="w-7 h-7 text-blue-900" />
-                  </div>
-                  <div>
-                    <h1 className="text-base font-bold tracking-wide text-white">
-                      Healthcare Portal
-                    </h1>
-                    <p className="text-xs text-blue-200">Administration</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 rounded-lg hover:bg-blue-800 transition-colors"
-                  aria-label="Close menu"
-                >
-                  <CloseIcon className="w-6 h-6 text-white" />
+              <div className="absolute top-4 right-4">
+                <button onClick={() => setIsMobileOpen(false)} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors">
+                  <CloseIcon className="w-4 h-4 text-slate-200" />
                 </button>
               </div>
-
-              {/* Mobile Navigation - Grouped by section */}
-              <nav className="flex-1 overflow-y-auto px-4 py-4">
-                {(() => {
-                  const filtered = navItems.filter((item) => !item.superAdminOnly || user?.role === "SUPER_ADMIN");
-                  const sections = Array.from(new Set(filtered.map((i) => i.section || "Main")));
-                  return sections.map((section) => (
-                    <div key={section} className="mb-5">
-                      <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                        {section}
-                      </p>
-                      <div className="space-y-1">
-                        {filtered.filter((i) => (i.section || "Main") === section).map((item, index) => {
-                          const isActive = router.pathname === item.path;
-                          return (
-                            <motion.button
-                              key={item.path}
-                              initial={{ x: -10, opacity: 0 }}
-                              animate={{ x: 0, opacity: 1 }}
-                              transition={{ delay: index * 0.03 }}
-                              onClick={() => {
-                                router.push(item.path);
-                                setIsMobileMenuOpen(false);
-                              }}
-                              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                                isActive
-                                  ? "bg-blue-50 text-blue-900 border-l-2 border-blue-600"
-                                  : "text-gray-700 hover:bg-gray-50 border-l-2 border-transparent"
-                              }`}
-                            >
-                              <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-blue-600" : "text-gray-500"}`} />
-                              <span className="flex-1 text-left">{item.label}</span>
-                            </motion.button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ));
-                })()}
-              </nav>
-
-              {/* Mobile Footer */}
-              {user && (
-                <div className="px-6 py-4 border-t border-gray-300 bg-gray-50 flex-shrink-0">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-full bg-blue-900 flex items-center justify-center text-white font-semibold shadow-md">
-                      {user.name.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 truncate">{user.name}</p>
-                      <p className="text-xs text-gray-600 truncate">{user.email}</p>
-                    </div>
-                  </div>
-                  <motion.button
-                    onClick={logout}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm font-medium hover:bg-red-100 transition-all"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <LogoutIcon className="w-5 h-5" />
-                    <span>Logout</span>
-                  </motion.button>
-                </div>
-              )}
+              <SidebarContent onNavigate={(path) => { router.push(path); setIsMobileOpen(false); }} />
             </motion.aside>
           </>
         )}
       </AnimatePresence>
-      
-      {/* Desktop Sidebar - Fixed Position */}
-      <motion.aside
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="hidden lg:flex fixed left-0 top-0 w-72 h-screen border-r border-gray-300 bg-white shadow-lg flex-col z-50"
-      >
-        {/* Fixed Header */}
-        <div className="px-6 py-6 border-b border-gray-300 bg-blue-900 flex-shrink-0">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="flex items-center gap-3"
-          >
-            <div className="h-12 w-12 rounded-lg bg-white flex items-center justify-center shadow-md">
-              <HospitalIcon className="w-7 h-7 text-blue-900" />
-            </div>
-            <div>
-              <h1 className="text-base font-bold tracking-wide text-white">
-                Healthcare Portal
-              </h1>
-              <p className="text-xs text-blue-200">Administration</p>
-            </div>
-          </motion.div>
-        </div>
 
-        {/* Scrollable Navigation - Grouped by section */}
-        <nav className="flex-1 overflow-y-auto px-4 py-4 min-h-0">
-          {(() => {
-            const filtered = navItems.filter((item) => !item.superAdminOnly || user?.role === "SUPER_ADMIN");
-            const sections = Array.from(new Set(filtered.map((i) => i.section || "Main")));
-            return sections.map((section) => (
-              <div key={section} className="mb-5">
-                <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                  {section}
-                </p>
-                <div className="space-y-1">
-                  {filtered.filter((i) => (i.section || "Main") === section).map((item) => {
-                    const isActive = router.pathname === item.path;
-                    return (
-                      <motion.button
-                        key={item.path}
-                        onClick={() => router.push(item.path)}
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                          isActive
-                            ? "bg-blue-50 text-blue-900 border-l-2 border-blue-600"
-                            : "text-gray-700 hover:bg-gray-50 hover:text-blue-800 border-l-2 border-transparent"
-                        }`}
-                        whileHover={{ x: 2 }}
-                        whileTap={{ scale: 0.99 }}
-                      >
-                        <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-blue-600" : "text-gray-500"}`} />
-                        <span className="flex-1 text-left">{item.label}</span>
-                      </motion.button>
-                    );
-                  })}
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex fixed left-0 top-0 w-60 h-screen sidebar-shell flex-col z-50">
+        <SidebarContent onNavigate={(path) => router.push(path)} />
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col overflow-hidden w-full lg:ml-60">
+        {/* Top Bar */}
+        <div className="sticky top-0 z-10 topbar px-4 sm:px-6 lg:px-8 py-3 flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm pl-10 lg:pl-0">
+              <span className="text-slate-400">Admin</span>
+              <span className="text-slate-300">/</span>
+              <span className="font-semibold text-slate-800 capitalize">{getBreadcrumb(router.pathname)}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 bg-white/80 border border-slate-200 rounded-full px-3 py-1.5">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow" />
+                <span>Live</span>
+              </div>
+              {user && (
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-emerald-500 flex items-center justify-center text-white font-bold text-xs shadow">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="hidden sm:block text-sm font-medium text-slate-700">{user.name}</span>
                 </div>
-              </div>
-            ));
-          })()}
-        </nav>
-
-        {/* Fixed Footer with User Info */}
-        {user && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="px-6 py-4 border-t border-gray-300 bg-gray-50 flex-shrink-0"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-10 w-10 rounded-full bg-blue-900 flex items-center justify-center text-white font-semibold shadow-md">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">{user.name}</p>
-                <p className="text-xs text-gray-600 truncate">{user.email}</p>
-              </div>
+              )}
             </div>
-            <motion.button
-              onClick={logout}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm font-medium hover:bg-red-100 transition-all"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <LogoutIcon className="w-5 h-5" />
-              <span>Logout</span>
-            </motion.button>
-          </motion.div>
-        )}
-      </motion.aside>
-
-      {/* Main Content - Scrollable with Sidebar Offset */}
-      <motion.main
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="flex-1 overflow-y-auto h-full w-full lg:ml-72 bg-gray-50/80"
-      >
-        {/* Breadcrumb - easy "you are here" */}
-        <div className="sticky top-0 z-10 bg-gray-50/95 backdrop-blur border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-2">
-          <div className="max-w-7xl mx-auto flex items-center gap-2 text-sm">
-            <span className="text-gray-500">Admin</span>
-            <span className="text-gray-300">/</span>
-            <span className="font-medium text-gray-800">{getBreadcrumb(router.pathname, navItems)}</span>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-12 pt-4">
-          {children}
+
+        {/* Page Content */}
+        <div className="flex-1 overflow-y-auto page-shell">
+          <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-12">
+            {children}
+          </div>
         </div>
-      </motion.main>
+      </main>
     </div>
   );
 }
-

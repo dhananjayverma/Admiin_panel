@@ -1,45 +1,45 @@
 /* Professional Medical/Government Design System for Admin Panel */
 
 :root {
-  /* Primary Colors - Medical Blue & Trust Green */
-  --medical-primary: #0066CC;
-  --medical-primary-dark: #004499;
-  --medical-primary-light: #3385D6;
-  --medical-secondary: #00A86B;
-  --medical-secondary-dark: #007A4F;
-  --medical-secondary-light: #33B888;
+  /* Primary Colors - Calm Teal & Ocean Blue */
+  --medical-primary: #0ea5a4;
+  --medical-primary-dark: #0f766e;
+  --medical-primary-light: #5eead4;
+  --medical-secondary: #f97316;
+  --medical-secondary-dark: #ea580c;
+  --medical-secondary-light: #fdba74;
   
-  /* Neutral Colors - Professional Grays */
-  --medical-bg: #F8FAFC;
-  --medical-surface: #FFFFFF;
-  --medical-border: #E2E8F0;
-  --medical-border-light: #F1F5F9;
+  /* Neutral Colors - Soft Modern */
+  --medical-bg: var(--app-bg);
+  --medical-surface: #ffffff;
+  --medical-border: #d7e1ec;
+  --medical-border-light: #eef2f7;
   
   /* Text Colors */
-  --medical-text-primary: #1E293B;
-  --medical-text-secondary: #64748B;
-  --medical-text-tertiary: #94A3B8;
+  --medical-text-primary: #0b1220;
+  --medical-text-secondary: #54657d;
+  --medical-text-tertiary: #7b8aa0;
   
   /* Status Colors */
-  --medical-success: #10B981;
-  --medical-warning: #F59E0B;
-  --medical-error: #EF4444;
-  --medical-info: #3B82F6;
+  --medical-success: #22c55e;
+  --medical-warning: #f59e0b;
+  --medical-error: #ef4444;
+  --medical-info: #3b82f6;
   
   /* Shadows */
-  --medical-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --medical-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --medical-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --medical-shadow-sm: 0 6px 12px rgba(15, 23, 42, 0.08);
+  --medical-shadow-md: 0 14px 28px rgba(15, 23, 42, 0.12);
+  --medical-shadow-lg: 0 20px 44px rgba(15, 23, 42, 0.16);
   
   /* Border Radius */
-  --medical-radius-sm: 8px;
-  --medical-radius-md: 12px;
-  --medical-radius-lg: 16px;
+  --medical-radius-sm: 10px;
+  --medical-radius-md: 14px;
+  --medical-radius-lg: 18px;
 }
 
 /* Professional Card Styles */
 .medical-card {
-  background: var(--medical-surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 100%);
   border: 1px solid var(--medical-border);
   border-radius: var(--medical-radius-lg);
   box-shadow: var(--medical-shadow-md);
@@ -48,6 +48,8 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .medical-card-elevated {
@@ -56,24 +58,24 @@
 
 /* Professional Button Styles */
 .medical-btn-primary {
-  background: var(--medical-primary);
+  background: linear-gradient(135deg, var(--medical-primary), var(--medical-primary-dark));
   color: white;
   border: none;
   border-radius: var(--medical-radius-md);
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   transition: all 0.2s;
-  box-shadow: var(--medical-shadow-sm);
+  box-shadow: 0 10px 20px rgba(14, 165, 164, 0.28);
 }
 
 .medical-btn-primary:hover {
-  background: var(--medical-primary-dark);
-  box-shadow: var(--medical-shadow-md);
+  background: linear-gradient(135deg, var(--medical-primary-dark), #0b8f8e);
+  box-shadow: 0 16px 30px rgba(14, 165, 164, 0.34);
   transform: translateY(-1px);
 }
 
 .medical-btn-secondary {
-  background: var(--medical-secondary);
+  background: linear-gradient(135deg, var(--medical-secondary), var(--medical-secondary-dark));
   color: white;
   border: none;
   border-radius: var(--medical-radius-md);
@@ -95,12 +97,12 @@
 .medical-input:focus {
   outline: none;
   border-color: var(--medical-primary);
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.18);
 }
 
 /* Status Badges */
 .medical-badge-success {
-  background: #D1FAE5;
+  background: #dcfce7;
   color: var(--medical-success);
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
@@ -109,7 +111,7 @@
 }
 
 .medical-badge-warning {
-  background: #FEF3C7;
+  background: #fef3c7;
   color: var(--medical-warning);
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
@@ -118,7 +120,7 @@
 }
 
 .medical-badge-error {
-  background: #FEE2E2;
+  background: #fee2e2;
   color: var(--medical-error);
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
@@ -127,7 +129,7 @@
 }
 
 .medical-badge-info {
-  background: #DBEAFE;
+  background: #dbeafe;
   color: var(--medical-info);
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
@@ -152,14 +154,13 @@
 
 /* Professional Background Gradient */
 .medical-bg-gradient {
-  background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #edf2f7 100%);
 }
 
 /* Medical Header Style */
 .medical-header {
   background: var(--medical-surface);
-  border-bottom: 2px solid var(--medical-border);
+  border-bottom: 1px solid var(--medical-border);
   padding: 1.5rem 2rem;
   box-shadow: var(--medical-shadow-sm);
 }
-

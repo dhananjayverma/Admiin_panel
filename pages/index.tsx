@@ -80,8 +80,7 @@ export default function LoginPage() {
       if (isAdmin) {
         router.push("/dashboard");
       } else {
-        // For non-admin users, you might want to redirect to a different page
-        // For now, redirect to dashboard but they'll see limited access
+        
         router.push("/dashboard");
       }
     } catch (err: any) {
