@@ -45,7 +45,7 @@ export default function NurseManagementPage() {
     if (tsFilters.department) params.append("department", tsFilters.department);
 
     try {
-      const res = await fetch(${API_BASE}/api/nurse/timesheets?${params}, { headers: { Authorization: Bearer ${token} } });
+      const res = await fetch(`${API_BASE}/api/nurse/timesheets?${params}`, { headers: { Authorization: `Bearer ${token}` } });
       setTimesheets(res.ok ? await res.json() : []);
     } catch { toast.error("Failed to fetch timesheets"); }
   };
@@ -56,9 +56,9 @@ export default function NurseManagementPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch(${API_BASE}/api/users/signup, {
+      const res = await fetch(`${API_BASE}/api/users/signup`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: Bearer ${token} },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ ...form, role: "NURSE" }),
       });
       if (!res.ok) throw new Error((await res.json()).message);
@@ -72,9 +72,9 @@ export default function NurseManagementPage() {
 
   const toggleActive = async (id: string, isActive: boolean) => {
     try {
-      const res = await fetch(${API_BASE}/api/users/${id}, {
+      const res = await fetch(`${API_BASE}/api/users/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: Bearer ${token} },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ isActive: !isActive }),
       });
       if (!res.ok) throw new Error();
@@ -85,9 +85,9 @@ export default function NurseManagementPage() {
 
   const approveEdit = async (sheetId: string) => {
     try {
-      const res = await fetch(${API_BASE}/api/nurse/timesheets/${sheetId}/approve-edit, {
+      const res = await fetch(`${API_BASE}/api/nurse/timesheets/${sheetId}/approve-edit`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", Authorization: Bearer ${token} },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error();
@@ -123,7 +123,7 @@ export default function NurseManagementPage() {
         <div className="flex flex-wrap gap-2 mb-6">
           {(["nurses", "timesheets"] as const).map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={px-4 py-2 text-sm font-semibold rounded-full border transition ${activeTab === tab ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"}}>
+              className={`px-4 py-2 text-sm font-semibold rounded-full border transition ${activeTab === tab ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"}`}>
               {tab === "timesheets" ? "Timesheet Logs" : "Nurses"}
             </button>
           ))}

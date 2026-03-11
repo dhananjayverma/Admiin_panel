@@ -10,7 +10,7 @@ import {
 } from "./Icons";
 
 interface User { id: string; name: string; email: string; role: string; }
-interface LayoutProps { children: ReactNode; user: User | null; currentPage?: string; }
+interface LayoutProps { children: ReactNode; user?: User | null; currentPage?: string; }
 type NavItem = {
   path: string; label: string; icon: React.ComponentType<{ className?: string }>;
   section?: string; superAdminOnly?: boolean; badge?: string;
